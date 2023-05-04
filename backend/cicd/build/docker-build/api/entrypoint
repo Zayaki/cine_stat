@@ -1,0 +1,10 @@
+#!/bin/bash 
+
+# Avoid start issue
+sleep 1
+
+# Init/upgrade database
+alembic upgrade head
+
+# Run the Flask app
+gunicorn -w 4 -b 0.0.0.0:5000 wsgi:app

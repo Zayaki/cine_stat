@@ -1,0 +1,34 @@
+version: '3.5'
+services:
+  db:
+    image: cine_stats_dev_db
+    container_name: cine_stats_dev_db
+    build: ./db
+    volumes:
+      - ./var/db/data:/var/lib/postgresql/data
+    environment:
+      - TZ=Europe/Paris
+      - POSTGRES_PASSWORD=GKeQE2yzLDsENAA3hvvO
+      - DB_NAME=cine_stats
+      - USER_NAME=application
+      - USER_PASSWORD=bb3XgMWIWVPjsi7DKELv
+    ports:
+      - "5432:5432"
+
+  api:
+    image: cine_stats_dev_api
+    container_name: cine_stats_dev_api
+    build: ./api
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./docker-compose.env
+    volumes:
+      - ../../cine_stats:/app
+    depends_on:
+      - db
+    command: sleep infinity
+
+networks:
+  default:
+    name: cine_stats_backend_dev

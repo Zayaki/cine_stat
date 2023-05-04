@@ -1,0 +1,31 @@
+version: '3'
+services:
+  cine_stats_db:
+    image: cine_stats_db
+    container_name: cine_stats_db
+    build: ./db
+    #volumes:
+      #- ./db/init:/sql
+      #- ./data/db/data:/var/lib/postgresql/data
+    environment:
+      - TZ=Europe/Paris
+      - POSTGRES_PASSWORD=GKeQE2yzLDsENAA3hvvO
+      - DB_NAME=cine_stats
+      - USER_NAME=ocs_admin
+      - USER_PASSWORD=bb3XgMWIWVPjsi7DKELv
+    #ports:
+    #  - "5432:5432"
+
+  cine_stats_api:
+    image: cine_stats_api
+    container_name: cine_stats_api
+    build: ./api
+    volumes:
+      #- ./apache2/000-default.conf:/etc/apache2/sites-available/000-default.conf  # Override apache conf
+      - ../../..:/var/www/html                    # Mount this code sources (../..) in container
+    #ports:
+    #  - "4200:80"
+    env_file:
+      - ./docker-compose.env
+    depends_on:
+      - cine_stats_db

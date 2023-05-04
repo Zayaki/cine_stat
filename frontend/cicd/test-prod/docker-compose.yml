@@ -1,0 +1,11 @@
+version: '3.5'
+services:
+  cine_stats_web:
+    image: cine_stats_web:latest
+    container_name: cine_stats_web   # Docker container name
+    ports:
+      - "4200:80"
+
+networks:
+  default:
+    name: cine_stats_network

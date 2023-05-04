@@ -1,0 +1,37 @@
+version: '3'
+services:
+  cine_stats_build_db:
+    image: cine_stats_build_db
+    container_name: cine_stats_build_db
+    build: ./db
+    environment:
+      - TZ=Europe/Paris
+      - POSTGRES_PASSWORD=the_admin_password
+      - DB_NAME=cine_stats
+      - USER_NAME=ocs_admin
+      - USER_PASSWORD=ocs_admin_password
+      - USER_NAME_OCS_LECTEUR=ocs_lecteur
+      - USER_PASSWORD_OCS_LECTEUR=ocs_lecteur_password
+      - USER_NAME_LECTEUR=lecteur
+      - USER_PASSWORD_LECTEUR=lecteur_password
+      - USER_NAME_ACAL=acal
+      - USER_PASSWORD_ACAL=acal_password
+    #ports:
+    #  - "5432:5432"
+
+  cine_stats_build_api:
+    image: cine_stats_build_api
+    container_name: cine_stats_build_api
+    build: ./api
+    volumes:
+      - ../../:/app
+    #ports:
+    #  - "4200:80"
+    env_file:
+      - ./docker-compose.env
+    depends_on:
+      - cine_stats_build_db:
+
+networks:
+  default:
+    name: cine_stats_backend_build
